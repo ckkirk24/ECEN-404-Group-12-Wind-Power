@@ -1,0 +1,77 @@
+Index: app/src/main/java/com/example/menutest/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.menutest\r\n\r\nimport android.Manifest\r\nimport android.bluetooth.BluetoothAdapter\r\nimport android.bluetooth.BluetoothDevice\r\nimport android.bluetooth.BluetoothManager\r\nimport android.content.Intent\r\nimport android.content.pm.PackageManager\r\nimport android.os.Build\r\nimport android.os.Bundle\r\nimport android.view.Menu\r\nimport android.widget.TextView\r\nimport androidx.annotation.RequiresApi\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport androidx.core.app.ActivityCompat\r\nimport androidx.drawerlayout.widget.DrawerLayout\r\nimport androidx.navigation.findNavController\r\nimport androidx.navigation.ui.AppBarConfiguration\r\nimport androidx.navigation.ui.navigateUp\r\nimport androidx.navigation.ui.setupActionBarWithNavController\r\nimport androidx.navigation.ui.setupWithNavController\r\nimport com.example.menutest.databinding.ActivityMainBinding\r\nimport com.google.android.material.navigation.NavigationView\r\nimport java.io.InputStream\r\nimport java.util.*\r\n\r\n\r\nclass MainActivity : AppCompatActivity() {\r\n    private  var deviceName:String = \"\"\r\n    private  var deviceHardwareAddress:String = \"\" //MAC address\r\n    private lateinit var appBarConfiguration: AppBarConfiguration\r\n    private lateinit var binding: ActivityMainBinding\r\n    private val REQUEST_ENABLE_BT = 0xface\r\n\r\n    @RequiresApi(Build.VERSION_CODES.M)\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n\r\n        binding = ActivityMainBinding.inflate(layoutInflater)\r\n        setContentView(binding.root)\r\n\r\n        setSupportActionBar(binding.appBarMain.toolbar)\r\n\r\n\r\n\r\n        val drawerLayout: DrawerLayout = binding.drawerLayout\r\n        val navView: NavigationView = binding.navView\r\n        val navController = findNavController(R.id.nav_host_fragment_content_main)\r\n        // Passing each menu ID as a set of Ids because each\r\n        // menu should be considered as top level destinations.\r\n        appBarConfiguration = AppBarConfiguration(\r\n            setOf(\r\n                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_settings\r\n            ), drawerLayout\r\n        )\r\n        setupActionBarWithNavController(navController, appBarConfiguration)\r\n        navView.setupWithNavController(navController)\r\n        val thread = Thread(Runnable {\r\n            BTsetup()\r\n        })\r\n        thread.start()\r\n    }\r\n\r\n    override fun onCreateOptionsMenu(menu: Menu): Boolean {\r\n        // Inflate the menu; this adds items to the action bar if it is present.\r\n        menuInflater.inflate(R.menu.main, menu)\r\n        return true\r\n    }\r\n\r\n    override fun onSupportNavigateUp(): Boolean {\r\n        val navController = findNavController(R.id.nav_host_fragment_content_main)\r\n        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()\r\n    }\r\n\r\n    // Set up BT\r\n    @RequiresApi(Build.VERSION_CODES.M)\r\n    fun BTsetup(){\r\n        val myTextView = findViewById<TextView>(R.id.myTextView)\r\n        val myVariableText = \"Hello, world!\"\r\n        myTextView.text = myVariableText\r\n        val bluetoothManager: BluetoothManager = getSystemService(BluetoothManager::class.java)\r\n        val bluetoothAdapter: BluetoothAdapter? = bluetoothManager.getAdapter()\r\n        if (bluetoothAdapter == null) {\r\n            // Device doesn't support Bluetooth\r\n        }\r\n        else {\r\n            if (bluetoothAdapter?.isEnabled == false) {\r\n                val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)\r\n                if (ActivityCompat.checkSelfPermission(\r\n                        this,\r\n                        Manifest.permission.BLUETOOTH_CONNECT\r\n                    ) != PackageManager.PERMISSION_GRANTED\r\n                ) {\r\n                    // TODO: Consider calling\r\n                    //    ActivityCompat#requestPermissions\r\n                    // here to request the missing permissions, and then overriding\r\n                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,\r\n                    //                                          int[] grantResults)\r\n                    // to handle the case where the user grants the permission. See the documentation\r\n                    // for ActivityCompat#requestPermissions for more details.\r\n                    return\r\n                }\r\n                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)\r\n            }\r\n            val pairedDevices: Set<BluetoothDevice>? = bluetoothAdapter?.bondedDevices\r\n            pairedDevices?.forEach { device ->\r\n                if(deviceName == \"ESP32-BT-Slave\"){\r\n                    deviceName = device.name\r\n                    deviceHardwareAddress = device.address // MAC address\r\n                }\r\n            }\r\n            val device: BluetoothDevice = bluetoothAdapter.getRemoteDevice(deviceHardwareAddress)\r\n            val socket = device.createRfcommSocketToServiceRecord(UUID.fromString(\"00001101-0000-1000-8000-00805F9B34FB\"))\r\n            socket.connect()\r\n\r\n            val inputStream: InputStream = socket.inputStream\r\n            val buffer = ByteArray(1024)\r\n            var bytes: Int\r\n            while (true) {\r\n                bytes = inputStream.read(buffer)\r\n                val data = String(buffer, 0, bytes)\r\n                // do something with the received data\r\n            }\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/menutest/MainActivity.kt b/app/src/main/java/com/example/menutest/MainActivity.kt
+--- a/app/src/main/java/com/example/menutest/MainActivity.kt	(revision 5eed2a0be21f23c0d475c4af7679149dc7bb2684)
++++ b/app/src/main/java/com/example/menutest/MainActivity.kt	(date 1681095019420)
+@@ -102,25 +102,28 @@
+                 }
+                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
+             }
+-            val pairedDevices: Set<BluetoothDevice>? = bluetoothAdapter?.bondedDevices
+-            pairedDevices?.forEach { device ->
+-                if(deviceName == "ESP32-BT-Slave"){
+-                    deviceName = device.name
+-                    deviceHardwareAddress = device.address // MAC address
+-                }
++            else {
++                myTextView.text = "BTadapter already enabled"
+             }
+-            val device: BluetoothDevice = bluetoothAdapter.getRemoteDevice(deviceHardwareAddress)
+-            val socket = device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"))
+-            socket.connect()
+-
+-            val inputStream: InputStream = socket.inputStream
+-            val buffer = ByteArray(1024)
+-            var bytes: Int
+-            while (true) {
+-                bytes = inputStream.read(buffer)
+-                val data = String(buffer, 0, bytes)
+-                // do something with the received data
+-            }
++//            val pairedDevices: Set<BluetoothDevice>? = bluetoothAdapter?.bondedDevices
++//            pairedDevices?.forEach { device ->
++//                if(deviceName == "ESP32-BT-Slave"){
++//                    deviceName = device.name
++//                    deviceHardwareAddress = device.address // MAC address
++//                }
++//            }
++//            val device: BluetoothDevice = bluetoothAdapter.getRemoteDevice(deviceHardwareAddress)
++//            val socket = device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"))
++//            socket.connect()
++//
++//            val inputStream: InputStream = socket.inputStream
++//            val buffer = ByteArray(1024)
++//            var bytes: Int
++//            while (true) {
++//                bytes = inputStream.read(buffer)
++//                val data = String(buffer, 0, bytes)
++//                // do something with the received data
++//            }
+         }
+     }
+ }
+\ No newline at end of file
+Index: app/src/main/res/layout/fragment_home.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".ui.home.HomeFragment\">\r\n\r\n    <TextView\r\n        android:layout_width=\"wrap_content\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        android:text=\"Battery Charge Level:\"\r\n        android:layout_height=\"wrap_content\"\r\n        />\r\n\r\n    <TextView\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"Power Generated:\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.464\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.553\" />\r\n\r\n    <ImageView\r\n        android:id=\"@+id/icon\"\r\n        android:layout_width=\"48dp\"\r\n        android:layout_height=\"50dp\"\r\n        android:src=\"@drawable/baseline_battery_0_bar_24\"\r\n        android:visibility=\"gone\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.749\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.433\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/myTextView\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:textSize=\"16sp\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.778\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.499\" />\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/fragment_home.xml b/app/src/main/res/layout/fragment_home.xml
+--- a/app/src/main/res/layout/fragment_home.xml	(revision 5eed2a0be21f23c0d475c4af7679149dc7bb2684)
++++ b/app/src/main/res/layout/fragment_home.xml	(date 1681095060201)
+@@ -50,6 +50,6 @@
+         app:layout_constraintHorizontal_bias="0.778"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+-        app:layout_constraintVertical_bias="0.499" />
++        app:layout_constraintVertical_bias="0.675" />
+ 
+ </androidx.constraintlayout.widget.ConstraintLayout>
+\ No newline at end of file
