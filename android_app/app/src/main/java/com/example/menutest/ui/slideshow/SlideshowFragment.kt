@@ -8,10 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.androidplot.xy.LineAndPointFormatter
-import com.androidplot.xy.SimpleXYSeries
-import com.androidplot.xy.XYGraphWidget
-import com.androidplot.xy.XYPlot
+import com.androidplot.xy.*
 import com.example.menutest.R
 import com.example.menutest.databinding.FragmentHomeBinding
 import com.example.menutest.databinding.FragmentSlideshowBinding
@@ -49,15 +46,20 @@ class SlideshowFragment : Fragment() {
 
     fun doPlot() {
         //val plot = view.findViewById<XYPlot>(R.id.plotCharge)
-        callcount++
+        //callcount++
         val plot = binding.plotCharge
-        binding.textTest.text = String.format("%5d", callcount)
-        val chargedArray = arrayOf<Number>(4.5, 7.5, 9.0, 7.5)
+        //binding.textTest.text = String.format("%5d", callcount)
+        val chargedArray = arrayOf<Number>(0, 15, 30, 45, 60, 50, 100)
+        val timeArray = arrayOf<Number>(0, 4, 8, 12, 16, 20, 24)
         val chargedSeries = SimpleXYSeries(
+            timeArray.asList(),
             chargedArray.asList(),
-            SimpleXYSeries.ArrayFormat.Y_VALS_ONLY,
-            "Charge vs Time"
+
+
+            "Charge (%) vs Time (hours)"
         )
+
+
         val chargedFormat = LineAndPointFormatter(Color.RED, Color.GREEN, null, null)
         try {
             plot.addSeries(chargedSeries, chargedFormat)
