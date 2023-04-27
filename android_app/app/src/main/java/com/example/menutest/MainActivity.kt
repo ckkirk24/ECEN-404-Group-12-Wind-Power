@@ -195,14 +195,27 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-    fun doPlot(){
-//        val plot = findViewById<XYPlot>(R.id.plotCharge)
-//        val chargedArray = arrayOf<Number>(4.5, 7.5, 9.0, 7.5)
-//        val chargedSeries = SimpleXYSeries(chargedArray.asList(), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Charge vs Time")
-//        val chargedFormat = LineAndPointFormatter(Color.RED, Color.GREEN, null,null)
-//        plot.addSeries(chargedSeries, chargedFormat)
+    fun doPlot() {
+        val plot = findViewById<XYPlot>(R.)
+        val chargedArray = arrayOf<Number>(4.5, 7.5, 9.0, 7.5)
+        val chargedSeries = SimpleXYSeries(
+            chargedArray.asList(),
+            SimpleXYSeries.ArrayFormat.Y_VALS_ONLY,
+            "Charge vs Time"
+        )
+        val chargedFormat = LineAndPointFormatter(Color.RED, Color.GREEN, null, null)
+        try {
+            plot.addSeries(chargedSeries, chargedFormat)
+        }
+        catch (e: java.lang.NullPointerException){
+            return
+        }
 //        plot.graph.getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).format = object : Format() {
-//            override fun format(obj: Any?, toAppendTo: StringBuffer?, pos: FieldPosition?): StringBuffer {
+//            override fun format(
+//                obj: Any?,
+//                toAppendTo: StringBuffer?,
+//                pos: FieldPosition?
+//            ): StringBuffer {
 //                val i = (obj as Number).toFloat().roundToInt()
 //                if (toAppendTo != null) {
 //                    return toAppendTo.append("")
@@ -215,5 +228,17 @@ class MainActivity : AppCompatActivity() {
 //
 //            }
 //        }
+    }
+    fun batteryUpdate(
+        ChargeLevel: Int)
+    {
+//        val myImageView: ImageView = findViewById(R.id.baseline_battery)
+
+//    if(ChargeLevel = 0){
+//        battery0.setVisibility(View.VISIBLE);
+//    }
+//    else{
+//        battery0.setVisibility(View.GONE);
+//    }
     }
 }

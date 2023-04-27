@@ -41,6 +41,136 @@
 
         app:layout_constraintVertical_bias="0.709" />
 
+    <ImageView
+        android:id="@+id/battery_1_bar"
+        android:layout_width="79dp"
+        android:layout_height="95dp"
+        android:src="@drawable/baseline_battery_1_bar_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintVertical_bias="0.709" />
+
+    <ImageView
+        android:id="@+id/battery_2_bar"
+        android:layout_width="79dp"
+        android:layout_height="95dp"
+        android:src="@drawable/baseline_battery_2_bar_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintVertical_bias="0.709" />
+
+    <ImageView
+        android:id="@+id/battery_3_bar"
+        android:layout_width="79dp"
+        android:layout_height="95dp"
+        android:src="@drawable/baseline_battery_3_bar_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintVertical_bias="0.709" />
+
+    <ImageView
+        android:id="@+id/battery_4_bar"
+        android:layout_width="79dp"
+        android:layout_height="95dp"
+        android:src="@drawable/baseline_battery_4_bar_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintVertical_bias="0.709" />
+
+    <ImageView
+        android:id="@+id/battery_5_bar"
+        android:layout_width="79dp"
+        android:layout_height="95dp"
+        android:src="@drawable/baseline_battery_5_bar_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintVertical_bias="0.709" />
+
+    <ImageView
+        android:id="@+id/battery_6_bar"
+        android:layout_width="79dp"
+        android:layout_height="95dp"
+        android:src="@drawable/baseline_battery_6_bar_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintVertical_bias="0.709" />
+
+    <ImageView
+        android:id="@+id/battery_charging_full"
+        android:layout_width="79dp"
+        android:layout_height="95dp"
+        android:src="@drawable/baseline_battery_charging_full_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintVertical_bias="0.709" />
+
+    <ImageView
+        android:id="@+id/battery_full"
+        android:layout_width="79dp"
+        android:layout_height="95dp"
+        android:src="@drawable/baseline_battery_full_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintVertical_bias="0.709" />
+
+    <ImageView
+        android:id="@+id/battery_unknown"
+        android:layout_width="79dp"
+        android:layout_height="95dp"
+        android:src="@drawable/baseline_battery_unknown_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintVertical_bias="0.709" />
+
+    <ImageView
+        android:id="@+id/bolt"
+        android:layout_width="79dp"
+        android:layout_height="95dp"
+        android:src="@drawable/baseline_bolt_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintVertical_bias="0.709" />
+
     <TextView
         android:id="@+id/myTextView"
         android:layout_width="0dp"
