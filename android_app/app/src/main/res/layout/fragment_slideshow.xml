@@ -23,7 +23,7 @@
         android:layout_height="match_parent"
         app:domainTitle="Time (hours)"
         app:rangeTitle="Charge (%)"
-        app:title="Charge vs Time"
+        app:title="Charge (%) vs Time (hours)"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

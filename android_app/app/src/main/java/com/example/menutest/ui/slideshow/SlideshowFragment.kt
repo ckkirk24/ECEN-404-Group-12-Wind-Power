@@ -16,6 +16,7 @@ import com.example.menutest.ui.home.HomeViewModel
 import java.text.FieldPosition
 import java.text.Format
 import java.text.ParsePosition
+import java.util.*
 import kotlin.math.roundToInt
 
 class SlideshowFragment : Fragment() {
@@ -51,13 +52,14 @@ class SlideshowFragment : Fragment() {
         //binding.textTest.text = String.format("%5d", callcount)
         val chargedArray = arrayOf<Number>(0, 15, 30, 45, 60, 50, 100)
         val timeArray = arrayOf<Number>(0, 4, 8, 12, 16, 20, 24)
-        val chargedSeries = SimpleXYSeries(
-            timeArray.asList(),
-            chargedArray.asList(),
-
+        val chargedSeries : XYSeries = SimpleXYSeries(
+            listOf(0, 4, 8, 12, 16, 20, 24), //X vals
+            listOf(0, 15, 30, 45, 60, 50, 100), //Y vals
 
             "Charge (%) vs Time (hours)"
         )
+
+
 
 
         val chargedFormat = LineAndPointFormatter(Color.RED, Color.GREEN, null, null)
@@ -67,23 +69,7 @@ class SlideshowFragment : Fragment() {
         catch (e: java.lang.NullPointerException){
             return
         }
-        plot.graph.getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).format = object : Format() {
-            override fun format(
-                obj: Any?,
-                toAppendTo: StringBuffer?,
-                pos: FieldPosition?
-            ): StringBuffer {
-                val i = (obj as Number).toFloat().roundToInt()
-                if (toAppendTo != null) {
-                    return toAppendTo.append("")
-                }
-                return StringBuffer()
-            }
 
-            override fun parseObject(p0: String?, p1: ParsePosition?): Any? {
-                return null
-
-            }
-        }
+        PanZoom.attach(plot) //add zooming and panning capabilities
     }
 }
