@@ -53,8 +53,8 @@ class SlideshowFragment : Fragment() {
         val chargedArray = arrayOf<Number>(0, 15, 30, 45, 60, 50, 100)
         val timeArray = arrayOf<Number>(0, 4, 8, 12, 16, 20, 24)
         val chargedSeries : XYSeries = SimpleXYSeries(
-            listOf(0, 4, 8, 12, 16, 20, 24), //X vals
-            listOf(0, 15, 30, 45, 60, 50, 100), //Y vals
+            timeArray.asList(), //X vals
+            chargedArray.asList(), //Y vals
 
             "Charge (%) vs Time (hours)"
         )
