@@ -19,8 +19,8 @@
     <com.androidplot.xy.XYPlot
         android:id="@+id/plotCharge"
         style="@style/APDefacto.Light"
-        android:layout_width="331dp"
-        android:layout_height="667dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         app:domainTitle="Time"
         app:rangeTitle="Charge"
         app:title="Charge vs Time"
@@ -29,6 +29,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.787"
+        android:id="@+id/textTest"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

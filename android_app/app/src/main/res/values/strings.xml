@@ -8,7 +8,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="menu_home">Home</string>
-    <string name="menu_design">System Design</string>
+    <string name="menu_design">Turbine Design</string>
     <string name="menu_histogram">Data</string>
     <string name="menu_settings">Settings</string>
 </resources>

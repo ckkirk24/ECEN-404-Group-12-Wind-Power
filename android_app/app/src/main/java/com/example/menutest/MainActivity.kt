@@ -75,10 +75,10 @@ class MainActivity : AppCompatActivity() {
             BTsetup()
         })
         thread.start()
-        val thread2 = Thread(Runnable {
-           doPlot()
-        })
-        thread2.start()
+//        val thread2 = Thread(Runnable {
+//           doPlot()
+//        })
+//        thread2.start()
 
         //========================================================
 
@@ -195,40 +195,40 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-    fun doPlot() {
-        val plot = findViewById<XYPlot>(R.)
-        val chargedArray = arrayOf<Number>(4.5, 7.5, 9.0, 7.5)
-        val chargedSeries = SimpleXYSeries(
-            chargedArray.asList(),
-            SimpleXYSeries.ArrayFormat.Y_VALS_ONLY,
-            "Charge vs Time"
-        )
-        val chargedFormat = LineAndPointFormatter(Color.RED, Color.GREEN, null, null)
-        try {
-            plot.addSeries(chargedSeries, chargedFormat)
-        }
-        catch (e: java.lang.NullPointerException){
-            return
-        }
-//        plot.graph.getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).format = object : Format() {
-//            override fun format(
-//                obj: Any?,
-//                toAppendTo: StringBuffer?,
-//                pos: FieldPosition?
-//            ): StringBuffer {
-//                val i = (obj as Number).toFloat().roundToInt()
-//                if (toAppendTo != null) {
-//                    return toAppendTo.append("")
-//                }
-//                return StringBuffer()
-//            }
-//
-//            override fun parseObject(p0: String?, p1: ParsePosition?): Any? {
-//                return null
-//
-//            }
+//    fun doPlot() {
+//        val plot = findViewById<XYPlot>(R.id.plotCharge)
+//        val chargedArray = arrayOf<Number>(4.5, 7.5, 9.0, 7.5)
+//        val chargedSeries = SimpleXYSeries(
+//            chargedArray.asList(),
+//            SimpleXYSeries.ArrayFormat.Y_VALS_ONLY,
+//            "Charge vs Time"
+//        )
+//        val chargedFormat = LineAndPointFormatter(Color.RED, Color.GREEN, null, null)
+//        try {
+//            plot.addSeries(chargedSeries, chargedFormat)
 //        }
-    }
+//        catch (e: java.lang.NullPointerException){
+//            return
+//        }
+////        plot.graph.getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).format = object : Format() {
+////            override fun format(
+////                obj: Any?,
+////                toAppendTo: StringBuffer?,
+////                pos: FieldPosition?
+////            ): StringBuffer {
+////                val i = (obj as Number).toFloat().roundToInt()
+////                if (toAppendTo != null) {
+////                    return toAppendTo.append("")
+////                }
+////                return StringBuffer()
+////            }
+////
+////            override fun parseObject(p0: String?, p1: ParsePosition?): Any? {
+////                return null
+////
+////            }
+////        }
+//    }
     fun batteryUpdate(
         ChargeLevel: Int)
     {
