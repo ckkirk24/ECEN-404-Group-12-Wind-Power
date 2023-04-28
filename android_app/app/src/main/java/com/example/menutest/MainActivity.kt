@@ -178,21 +178,21 @@ class MainActivity : AppCompatActivity() {
                         val parts = rxString.split(" ") // split the string into an array of substrings based on the space delimiter
                         try {
                             chargePercent = parts[0].toFloat()
-//                            myTextView.text = String.format("%5.1f %%", chargePercent)
+                            myTextView.text = String.format("%5.1f %%", chargePercent)
                         }
                         catch (e: java.lang.NumberFormatException){
-//                            myTextView.text = "-----.-----"
+                            myTextView.text = "-----.-----"
                         }
                         try {
                               powerOutput = parts[1].toFloat()
-//                            runOnUiThread {
-//                                textView2.text = String.format("%5.3f W", powerOutput)
-//                            }
+                            runOnUiThread {
+                                textView2.text = String.format("%5.3f W", powerOutput)
+                            }
                         }
                         catch (e: java.lang.NumberFormatException){
-//                            runOnUiThread {
-//                                textView2.text = "-----.-----"
-//                            }
+                            runOnUiThread {
+                                textView2.text = "-----.-----"
+                            }
                         }
                     }
                 }

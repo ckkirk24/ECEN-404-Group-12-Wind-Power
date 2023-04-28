@@ -35,8 +35,8 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        binding.myTextView.text = String.format("%5.1f %%", chargePercent)
-        binding.textView2.text = String.format("%5.3f W", powerOutput)
+//        binding.myTextView.text = String.format("%5.1f %%", chargePercent)
+//        binding.textView2.text = String.format("%5.3f W", powerOutput)
         return root
     }
     // empty battery display
