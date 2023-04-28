@@ -32,6 +32,7 @@ class Settingsfragment : Fragment() {
         //confirm user input is valid
         editText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                //take user input text and convert to float or null
                 val desiredChargeLevel = editText.text.toString().toFloatOrNull()
                 //condition for valid user input
                 if (desiredChargeLevel != null && desiredChargeLevel <= 100) {
