@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -25,12 +26,25 @@ class Settingsfragment : Fragment() {
     ): View {
 
         val root = inflater.inflate(R.layout.fragment_settings, container, false)
+        //reference edit_text and textview in the settings fragment
         val editText = root.findViewById<EditText>(R.id.edit_text)
-        val desiredChargeLevel = editText.text.toString().toFloatOrNull()
-        // desiredChargeLevel will be null if the user enters an invalid input (e.g., non-numeric value)
+        val displayText = root.findViewById<TextView>(R.id.display_text)
+        //confirm user input is valid
+        editText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                val desiredChargeLevel = editText.text.toString().toFloatOrNull()
+                //condition for valid user input
+                if (desiredChargeLevel != null && desiredChargeLevel <= 100) {
+                    displayText.text = "Desired max charge level: ${desiredChargeLevel}%"
+                } else {
+                    displayText.text = "Invalid input"
+                }
 
-
-
+                true
+            } else {
+                false
+            }
+        }
         return root
     }
 }

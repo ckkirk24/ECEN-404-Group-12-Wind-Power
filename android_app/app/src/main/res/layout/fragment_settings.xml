@@ -19,5 +19,15 @@
         app:layout_constraintVertical_bias="0.5"
         android:inputType="numberDecimal"/>
 <!--    input will be taken as a string from the user and then converted to a float-->
-
+    <TextView
+        android:id="@+id/display_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
