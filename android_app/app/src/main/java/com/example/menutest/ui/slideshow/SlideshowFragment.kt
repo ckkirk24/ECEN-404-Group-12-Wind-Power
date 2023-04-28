@@ -59,9 +59,6 @@ class SlideshowFragment : Fragment() {
             "Charge (%) vs Time (hours)"
         )
 
-
-
-
         val chargedFormat = LineAndPointFormatter(Color.RED, Color.GREEN, null, null)
         try {
             plot.addSeries(chargedSeries, chargedFormat)

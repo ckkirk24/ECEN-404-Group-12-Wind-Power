@@ -160,7 +160,7 @@ class MainActivity : AppCompatActivity() {
                         deviceHardwareAddress = device.address // MAC address
                     }
                 }
-                myTextView.text = deviceName
+                myTextView.text = "Battery Charge Level: "
 //                myTextView.text = "chosen: " + deviceName +"\n others:\n" + myDeviceNames
             try{
                 val device: BluetoothDevice = bluetoothAdapter.getRemoteDevice(deviceHardwareAddress)
