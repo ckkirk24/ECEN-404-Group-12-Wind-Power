@@ -47,7 +47,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val REQUEST_ENABLE_BT = 0xface
     private lateinit var plot: XYPlot
-
+    var chargePercent: Float = 0.0F
+    var powerOutput: Float = 0.0F
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -176,22 +177,22 @@ class MainActivity : AppCompatActivity() {
                         val rxString = String(buffer, 0, bytes)
                         val parts = rxString.split(" ") // split the string into an array of substrings based on the space delimiter
                         try {
-                            val chargePercent = parts[0].toFloat()
-                            myTextView.text = String.format("%5.1f %%", chargePercent)
+                            chargePercent = parts[0].toFloat()
+//                            myTextView.text = String.format("%5.1f %%", chargePercent)
                         }
                         catch (e: java.lang.NumberFormatException){
-                            myTextView.text = "-----.-----"
+//                            myTextView.text = "-----.-----"
                         }
                         try {
-                            val powerOutput = parts[1].toFloat()
-                            runOnUiThread {
-                                textView2.text = String.format("%5.1f W", powerOutput)
-                            }
+                              powerOutput = parts[1].toFloat()
+//                            runOnUiThread {
+//                                textView2.text = String.format("%5.3f W", powerOutput)
+//                            }
                         }
                         catch (e: java.lang.NumberFormatException){
-                            runOnUiThread {
-                                textView2.text = "-----.-----"
-                            }
+//                            runOnUiThread {
+//                                textView2.text = "-----.-----"
+//                            }
                         }
                     }
                 }

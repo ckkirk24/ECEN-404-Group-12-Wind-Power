@@ -6,29 +6,71 @@
     android:layout_height="match_parent"
     tools:context=".ui.gallery.GalleryFragment">
 
-<!--    <TextView-->
-<!--        android:id="@+id/text_gallery"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="8dp"-->
-<!--        android:layout_marginTop="8dp"-->
-<!--        android:layout_marginEnd="8dp"-->
-<!--        android:textAlignment="center"-->
-<!--        android:textSize="20sp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="379dp"
-        android:layout_height="324dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="212dp"
-        android:src="@drawable/screenshot_2023_04_12_015128"
+        android:layout_width="364dp"
+        android:layout_height="239dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/orientations"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="404dp"
+        android:layout_height="218dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="24dp"
+        android:src="@drawable/hot"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView12"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/imageView12"
+        android:layout_width="403dp"
+        android:layout_height="216dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="252dp"
+        android:src="@drawable/vot"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:layout_constraintVertical_bias="1.0" />
+
+
+    <!--    <TextView-->
+<!--        android:id="@+id/HAWTdescription"-->
+<!--        android:layout_width="187dp"-->
+<!--        android:layout_height="325dp"-->
+<!--        android:text="HAWTs are the most commonly used wind turbines. They are highly efficient in converting wind energy into electrical energy, especially in areas with high wind speeds. HAWTs are generally larger than VAWTs and have a higher energy output. They require complex mechanisms to turn the blades towards the wind, which can be expensive and require maintenance. Because they are so large, they are not suitable for cities. They can produce a lot of noise, especially when the wind speeds are high."-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.071"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.785" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/VAWTdescription"-->
+<!--        android:layout_width="187dp"-->
+<!--        android:layout_height="325dp"-->
+<!--        android:text="-->
+<!--VAWTs can operate in low wind speeds and from any direction, making them better than HAWTs in areas with inconsistent winds.-->
+<!--They are often smaller than HAWTs, meaning they can be used in more populated places.-->
+<!--They are also usually cheaper and easier to maintain than HAWTs.-->
+<!--VAWTs are less efficient in converting wind energy into electrical energy, especially in high wind speeds.-->
+<!--"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.946"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.785" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
