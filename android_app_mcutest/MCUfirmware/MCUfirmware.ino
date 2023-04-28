@@ -27,7 +27,10 @@ const float frequency = 0.1;  // Frequency of the sine wave in Hz
 const float amplitude = 9.0;  // Amplitude of the sine wave (0-255)
 const float offset = 4.5;  // Offset of the sine wave (0-255)
 
-
+const int sampleRate2 = 1;  // Sample rate in Hz
+const float frequency2 = 0.3;  // Frequency of the sine wave in Hz
+const float amplitude2 = 0.55;  // Amplitude of the sine wave (0-255)
+const float offset2 = amplitude2 / 2.0;  // Offset of the sine wave (0-255)
 
 void setup() {
   Serial.begin(115200);
@@ -80,6 +83,7 @@ void loop() {
   float value = (amplitude/2) * sin(2.0 * PI * frequency * time) + offset;  // Sine wave value (-1.0 to 1.0)
   float percentage = (value/9.0) * 100.0;  // Convert value to a percentage out of 9
 
+  float value2 = (amplitude2/2) * sin(2.0 * PI * frequency2 * time) + offset2; //Power in Watts
 // Print the percentage value
   Serial.print("Percentage: ");
   Serial.println(percentage);
@@ -90,8 +94,17 @@ void loop() {
   Serial.println(value);
   
   //SerialBT.println(value);
+  char buf1[10];
+  char buf2[10];
   
-  SerialBT.print(percentage);
+  dtostrf(percentage, 5, 2, buf1); // convert the float percentage to a string with 2 decimal places
+  dtostrf(value2, 5, 2, buf2); // convert the float value2 to a string with 2 decimal places
+  String s1 = String(buf1);
+  String s2 = String(buf2);
+  s1.trim();
+  s2.trim();
+  String s = s1 + " " + s2; // concatenate the strings
+  SerialBT.print(s); // print the concatenated string to the SerialBT object
   
   delay(1000 / sampleRate);
 }

@@ -99,6 +99,7 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     fun BTsetup(){
         val myTextView = findViewById<TextView>(R.id.myTextView)
+        val textView2 = findViewById<TextView>(R.id.textView2)
         val myVariableText = "Hello, world!"
         myTextView.text = myVariableText
         val bluetoothManager: BluetoothManager = getSystemService(BluetoothManager::class.java)
@@ -162,36 +163,47 @@ class MainActivity : AppCompatActivity() {
                 }
                 myTextView.text = "Battery Charge Level: "
 //                myTextView.text = "chosen: " + deviceName +"\n others:\n" + myDeviceNames
-            try{
-                val device: BluetoothDevice = bluetoothAdapter.getRemoteDevice(deviceHardwareAddress)
-                val socket = device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"))
-                socket.connect()
+                try{
+                    val device: BluetoothDevice = bluetoothAdapter.getRemoteDevice(deviceHardwareAddress)
+                    val socket = device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"))
+                    socket.connect()
 
-                val inputStream: InputStream = socket.inputStream
-                val buffer = ByteArray(1024)
-                var bytes: Int
-                while (true) {
-                    bytes = inputStream.read(buffer)
-                    val data = String(buffer, 0, bytes)
-
-                    try {
-                        val fdata = data.toFloat()
-                        myTextView.text = String.format("%5.1f %%", fdata)
-                    }
-                    catch (e: java.lang.NumberFormatException){
-                        myTextView.text = "---.---"
+                    val inputStream: InputStream = socket.inputStream
+                    val buffer = ByteArray(1024)
+                    var bytes: Int
+                    while (true) {
+                        bytes = inputStream.read(buffer)
+                        val rxString = String(buffer, 0, bytes)
+                        val parts = rxString.split(" ") // split the string into an array of substrings based on the space delimiter
+                        try {
+                            val chargePercent = parts[0].toFloat()
+                            myTextView.text = String.format("%5.1f %%", chargePercent)
+                        }
+                        catch (e: java.lang.NumberFormatException){
+                            myTextView.text = "-----.-----"
+                        }
+                        try {
+                            val powerOutput = parts[1].toFloat()
+                            runOnUiThread {
+                                textView2.text = String.format("%5.1f W", powerOutput)
+                            }
+                        }
+                        catch (e: java.lang.NumberFormatException){
+                            runOnUiThread {
+                                textView2.text = "-----.-----"
+                            }
+                        }
                     }
                 }
-            }
-            catch (e: IOException){
-                runOnUiThread {
-                    Toast.makeText(
-                        this,
-                        "Failed to establish Bluetooth connection",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                catch (e: IOException){
+                    runOnUiThread {
+                        Toast.makeText(
+                            this,
+                            "Failed to establish Bluetooth connection",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
-            }
             }
         }
     }
