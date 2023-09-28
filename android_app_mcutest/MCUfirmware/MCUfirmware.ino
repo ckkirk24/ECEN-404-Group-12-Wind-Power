@@ -24,13 +24,13 @@ BluetoothSerial SerialBT;
 // Sine wave generation using PWM
 const int sampleRate = 1;  // Sample rate in Hz
 const float frequency = 0.1;  // Frequency of the sine wave in Hz
-const float amplitude = 9.0;  // Amplitude of the sine wave (0-255)
-const float offset = 4.5;  // Offset of the sine wave (0-255)
+const float amplitude = 9.0;  // Amplitude of the sine wave 
+const float offset = 4.5;  // Offset of the sine wave 
 
 const int sampleRate2 = 1;  // Sample rate in Hz
 const float frequency2 = 0.3;  // Frequency of the sine wave in Hz
-const float amplitude2 = 0.55;  // Amplitude of the sine wave (0-255)
-const float offset2 = amplitude2 / 2.0;  // Offset of the sine wave (0-255)
+const float amplitude2 = 0.55;  // Amplitude of the sine wave 
+const float offset2 = amplitude2 / 2.0;  // Offset of the sine wave 
 
 void setup() {
   Serial.begin(115200);
@@ -80,10 +80,10 @@ void loop() {
   //delay(200);
 
   float time = (float)millis() / 1000.0;  // Current time in seconds
-  float value = (amplitude/2) * sin(2.0 * PI * frequency * time) + offset;  // Sine wave value (-1.0 to 1.0)
+  float value = (amplitude/2) * sin(2.0 * PI * frequency * time) + offset;  // voltage of batt 0-9V
   float percentage = (value/9.0) * 100.0;  // Convert value to a percentage out of 9
 
-  float value2 = (amplitude2/2) * sin(2.0 * PI * frequency2 * time) + offset2; //Power in Watts
+  float value2 = (amplitude2/2) * sin(2.0 * PI * frequency2 * time) + offset2; //Power in Watts ) 0-0.55 W
 // Print the percentage value
   Serial.print("Percentage: ");
   Serial.println(percentage);
@@ -105,6 +105,7 @@ void loop() {
   s2.trim();
   String s = s1 + " " + s2; // concatenate the strings
   SerialBT.print(s); // print the concatenated string to the SerialBT object
+  
   
   delay(1000 / sampleRate);
 }

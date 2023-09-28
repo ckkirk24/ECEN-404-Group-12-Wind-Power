@@ -32,6 +32,9 @@ import com.example.menutest.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 import java.io.IOException
 import java.io.InputStream
+import java.io.OutputStream
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import java.text.FieldPosition
 import java.text.Format
 import java.text.ParsePosition
@@ -72,6 +75,7 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        //BT Setup running as background thread
         val thread = Thread(Runnable {
             BTsetup()
         })
@@ -101,17 +105,20 @@ class MainActivity : AppCompatActivity() {
     fun BTsetup(){
         val myTextView = findViewById<TextView>(R.id.myTextView)
         val textView2 = findViewById<TextView>(R.id.textView2)
+        val desiredCharge = findViewById<TextView>(R.id.display_text)
         val myVariableText = "Hello, world!"
         myTextView.text = myVariableText
+        //get the BT adapter from Android API
         val bluetoothManager: BluetoothManager = getSystemService(BluetoothManager::class.java)
         val bluetoothAdapter: BluetoothAdapter? = bluetoothManager.getAdapter()
         if (bluetoothAdapter == null) {
-            // Device doesn't support Bluetooth
+            // Device doesn't support Bluetooth (function returns, thread dies)
         }
         else {
-            myTextView.text = "BTA NOT NULL"
-
+//            myTextView.text = "BTA NOT NULL"
+            //if phone has BT turned on
             if (bluetoothAdapter?.isEnabled == true) {
+                //check for BT permissions for app, if not then request permission
                 if (ContextCompat.checkSelfPermission(
                         this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
                     val MY_PERMISSIONS_REQUEST_BLUETOOTH_CONNECT = 0xba55
@@ -120,71 +127,64 @@ class MainActivity : AppCompatActivity() {
                         MY_PERMISSIONS_REQUEST_BLUETOOTH_CONNECT)
                 }
                 val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-//                if (ActivityCompat.checkSelfPermission(
-//                        this,
-//                        Manifest.permission.BLUETOOTH_CONNECT
-//                    ) != PackageManager.PERMISSION_GRANTED
-//                ) {
-//                    // TODO: Consider calling
-//                    //    ActivityCompat#requestPermissions
-//                    // here to request the missing permissions, and then overriding
-//                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//                    //                                          int[] grantResults)
-//                    // to handle the case where the user grants the permission. See the documentation
-//                    // for ActivityCompat#requestPermissions for more details.
-//                    return
+
+
+//                if (ContextCompat.checkSelfPermission(
+//                        this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+//                    val MY_PERMISSIONS_REQUEST_BLUETOOTH_CONNECT = 0xba55
+//                    myTextView.text = "BT permission NOT granted"
+//                    ActivityCompat.requestPermissions(this,
+//                        arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
+//                        MY_PERMISSIONS_REQUEST_BLUETOOTH_CONNECT)
+//                    myTextView.text = "BT request perm done"
 //                }
-                if (ContextCompat.checkSelfPermission(
-                        this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                    val MY_PERMISSIONS_REQUEST_BLUETOOTH_CONNECT = 0xba55
-                    myTextView.text = "BT permission NOT granted"
-                    ActivityCompat.requestPermissions(this,
-                        arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
-                        MY_PERMISSIONS_REQUEST_BLUETOOTH_CONNECT)
-                    myTextView.text = "BT request perm done"
-                }
-                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
+//                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
             }
             else {
                 myTextView.text = "BT adapter NOT enabled"
             }
-
+            //if
             if (bluetoothAdapter.bondedDevices == null) {
                 myTextView.text = "BTA.bonded null"
             } else {
                 myTextView.text = "BTA.bonded NOT null"
+                //get Set of BT devices and get ESP32
                 val pairedDevices: Set<BluetoothDevice>? = bluetoothAdapter?.bondedDevices
 
                 pairedDevices?.forEach { device ->
 //                    myDeviceNames += device.name + "\n"
+                    //find ESP32 device
                     if (device.name == "ESP32-BT-Slave") {
                         deviceName = device.name
                         deviceHardwareAddress = device.address // MAC address
                     }
                 }
-                myTextView.text = "Battery Charge Level: "
+//                myTextView.text = "Battery Charge Level: "
 //                myTextView.text = "chosen: " + deviceName +"\n others:\n" + myDeviceNames
                 try{
+                    //get ESP32 device and create socket and connect to it
                     val device: BluetoothDevice = bluetoothAdapter.getRemoteDevice(deviceHardwareAddress)
+                    //create socket using common serial port UUID
                     val socket = device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"))
                     socket.connect()
-
-                    val inputStream: InputStream = socket.inputStream
+                    //get BT serial data from ESP32 and parse it, then update the textViews on home page
+                    val inputStream: InputStream = socket.inputStream //interface with socket object char stream
+                    val outputStream: OutputStream = socket.outputStream
                     val buffer = ByteArray(1024)
                     var bytes: Int
                     while (true) {
-                        bytes = inputStream.read(buffer)
-                        val rxString = String(buffer, 0, bytes)
+                        bytes = inputStream.read(buffer) //return number of available bytes
+                        val rxString = String(buffer, 0, bytes) //convert buffer of bytes to a string
                         val parts = rxString.split(" ") // split the string into an array of substrings based on the space delimiter
                         try {
-                            chargePercent = parts[0].toFloat()
+                            chargePercent = parts[0].toFloat() //first part is always charge percent
                             myTextView.text = String.format("%5.1f %%", chargePercent)
                         }
                         catch (e: java.lang.NumberFormatException){
                             myTextView.text = "-----.-----"
                         }
                         try {
-                              powerOutput = parts[1].toFloat()
+                              powerOutput = parts[1].toFloat() //second part is always power value
                             runOnUiThread {
                                 textView2.text = String.format("%5.3f W", powerOutput)
                             }
@@ -194,6 +194,19 @@ class MainActivity : AppCompatActivity() {
                                 textView2.text = "-----.-----"
                             }
                         }
+
+                        // writing to the ESP32
+                        val dataToSend = 5.5f // Float value to send
+                        val byteBuffer = ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putFloat(dataToSend)
+                        val dataBytes = byteBuffer.array()
+
+                        for (byte in dataBytes) {
+                            println(byte)
+                        }
+
+                        outputStream.write(dataBytes) // Send the byte array over Bluetooth
+
+
                     }
                 }
                 catch (e: IOException){
