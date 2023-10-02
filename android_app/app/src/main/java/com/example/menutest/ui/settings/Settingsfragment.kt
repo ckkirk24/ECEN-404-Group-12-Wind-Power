@@ -1,6 +1,7 @@
 package com.example.menutest.ui.settings
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +30,7 @@ class Settingsfragment : Fragment() {
         //reference edit_text and textview in the settings fragment
         val editText = root.findViewById<EditText>(R.id.edit_text)
         val displayText = root.findViewById<TextView>(R.id.display_text)
+        editText.setText("10.0")
         //confirm user input is valid
         editText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -36,11 +38,11 @@ class Settingsfragment : Fragment() {
                 val desiredChargeLevel = editText.text.toString().toFloatOrNull()
                 //condition for valid user input
                 if (desiredChargeLevel != null && desiredChargeLevel <= 100) {
-                    displayText.text = "Desired max charge level: ${desiredChargeLevel}%"
+                    displayText.text = "Max Charge Level is Set: ${desiredChargeLevel}%"
                 } else {
-                    displayText.text = "Invalid input"
+                    displayText.text = "Invalid Charge Level"
                 }
-
+                Log.d("SETTINGS", "Settings Fragment: $desiredChargeLevel" )
                 true
             } else {
                 false

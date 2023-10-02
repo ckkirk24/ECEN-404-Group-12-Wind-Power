@@ -9,7 +9,9 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -89,6 +91,8 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
@@ -105,9 +109,19 @@ class MainActivity : AppCompatActivity() {
     fun BTsetup(){
         val myTextView = findViewById<TextView>(R.id.myTextView)
         val textView2 = findViewById<TextView>(R.id.textView2)
-        val desiredCharge = findViewById<TextView>(R.id.display_text)
-        val myVariableText = "Hello, world!"
-        myTextView.text = myVariableText
+
+        val fragmentManager = supportFragmentManager
+        val fragment = fragmentManager.findFragmentById(R.id.nav_settings)
+        // Step 4: Access the EditText within the fragment
+        val editTextInFragment = fragment?.view?.findViewById<EditText>(R.id.edit_text)
+
+        // Step 5: Get the text from the EditText
+        val textFromEditText = editTextInFragment?.text.toString()
+
+//        val desiredCharge = findViewById<EditText>(R.id.edit_text)
+        Log.d("SETTINGS", "Text from EditText: $textFromEditText")
+//        val myVariableText = "Hello, world!"
+//        myTextView.text = myVariableText
         //get the BT adapter from Android API
         val bluetoothManager: BluetoothManager = getSystemService(BluetoothManager::class.java)
         val bluetoothAdapter: BluetoothAdapter? = bluetoothManager.getAdapter()
@@ -197,14 +211,13 @@ class MainActivity : AppCompatActivity() {
 
                         // writing to the ESP32
                         val dataToSend = 5.5f // Float value to send
+//                        val dataToSend = desiredCharge.text.toString().toFloat()
                         val byteBuffer = ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putFloat(dataToSend)
                         val dataBytes = byteBuffer.array()
 
-                        for (byte in dataBytes) {
-                            println(byte)
-                        }
 
-                        outputStream.write(dataBytes) // Send the byte array over Bluetooth
+
+                        outputStream.write(dataBytes) // Send data to ESP32 over Bluetooth
 
 
                     }

@@ -35,12 +35,30 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-//        binding.myTextView.text = String.format("%5.1f %%", chargePercent)
-//        binding.textView2.text = String.format("%5.3f W", powerOutput)
+        binding.myTextView.text = String.format("%5.1f %%", chargePercent)
+        binding.textView2.text = String.format("%5.3f W", powerOutput)
+        val thread2 = Thread(Runnable{
+            activity?.runOnUiThread {
+                // Update UI components here
+                updateData()
+            }
+        })
+        thread2.start()
         return root
     }
     // empty battery display
-
+    private fun updateData() {
+        val mainActivity = activity as MainActivity
+//        super.onResume()
+//        while (true) {
+            val chargePercent = mainActivity.chargePercent
+            val powerOutput = mainActivity.powerOutput
+//            activity?.runOnUiThread  {
+                binding.myTextView.text = String.format("%5.1f %%", chargePercent)
+                binding.textView2.text = String.format("%5.3f W", powerOutput)
+//            }
+//        }
+    }
     fun batteryUpdate(
          ChargeLevel: Int)
     {
@@ -53,8 +71,8 @@ class HomeFragment : Fragment() {
 //        battery0.setVisibility(View.GONE);
 //    }
     }
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+//    override fun onDestroyView() {
+//        super.onDestroyView()
+//        _binding = null
+//    }
 }
