@@ -9,6 +9,8 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Menu
 import android.widget.EditText
@@ -19,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -31,6 +34,7 @@ import com.androidplot.xy.XYGraphWidget
 import com.androidplot.xy.XYPlot
 import com.androidplot.xy.XYSeries
 import com.example.menutest.databinding.ActivityMainBinding
+import com.example.menutest.ui.home.HomeViewModel
 import com.google.android.material.navigation.NavigationView
 import java.io.IOException
 import java.io.InputStream
@@ -45,15 +49,18 @@ import kotlin.math.roundToInt
 
 
 class MainActivity : AppCompatActivity() {
-    private  var deviceName:String = ""
-    private  var myDeviceNames:String = ""
-    private  var deviceHardwareAddress:String = "" //MAC address
+    private var deviceName: String = ""
+    private var myDeviceNames: String = ""
+    private var deviceHardwareAddress: String = "" //MAC address
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private val REQUEST_ENABLE_BT = 0xface
     private lateinit var plot: XYPlot
     var chargePercent: Float = 0.0F
     var powerOutput: Float = 0.0F
+    private lateinit var homeViewModel: HomeViewModel
+    private val mainHandler = Handler(Looper.getMainLooper())
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +70,12 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
+        // Home View Model Stuff
+        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+
+        // Example: Set the data when it changes (you can set it from your data source)
+        homeViewModel.setData1("New data from MainActivity")
+        homeViewModel.setData2("Data for LiveData2 from MainActivity")
 
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
@@ -92,7 +105,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
@@ -106,7 +118,7 @@ class MainActivity : AppCompatActivity() {
 
     // Set up BT
     @RequiresApi(Build.VERSION_CODES.M)
-    fun BTsetup(){
+    fun BTsetup() {
         val myTextView = findViewById<TextView>(R.id.myTextView)
         val textView2 = findViewById<TextView>(R.id.textView2)
 
@@ -127,18 +139,21 @@ class MainActivity : AppCompatActivity() {
         val bluetoothAdapter: BluetoothAdapter? = bluetoothManager.getAdapter()
         if (bluetoothAdapter == null) {
             // Device doesn't support Bluetooth (function returns, thread dies)
-        }
-        else {
+        } else {
 //            myTextView.text = "BTA NOT NULL"
             //if phone has BT turned on
             if (bluetoothAdapter?.isEnabled == true) {
                 //check for BT permissions for app, if not then request permission
                 if (ContextCompat.checkSelfPermission(
-                        this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                        this, Manifest.permission.BLUETOOTH_CONNECT
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
                     val MY_PERMISSIONS_REQUEST_BLUETOOTH_CONNECT = 0xba55
-                    ActivityCompat.requestPermissions(this,
+                    ActivityCompat.requestPermissions(
+                        this,
                         arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
-                        MY_PERMISSIONS_REQUEST_BLUETOOTH_CONNECT)
+                        MY_PERMISSIONS_REQUEST_BLUETOOTH_CONNECT
+                    )
                 }
                 val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
 
@@ -153,8 +168,7 @@ class MainActivity : AppCompatActivity() {
 //                    myTextView.text = "BT request perm done"
 //                }
 //                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
-            }
-            else {
+            } else {
                 myTextView.text = "BT adapter NOT enabled"
             }
             //if
@@ -175,36 +189,51 @@ class MainActivity : AppCompatActivity() {
                 }
 //                myTextView.text = "Battery Charge Level: "
 //                myTextView.text = "chosen: " + deviceName +"\n others:\n" + myDeviceNames
-                try{
+                try {
                     //get ESP32 device and create socket and connect to it
-                    val device: BluetoothDevice = bluetoothAdapter.getRemoteDevice(deviceHardwareAddress)
+                    val device: BluetoothDevice =
+                        bluetoothAdapter.getRemoteDevice(deviceHardwareAddress)
                     //create socket using common serial port UUID
-                    val socket = device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"))
+                    val socket =
+                        device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"))
                     socket.connect()
                     //get BT serial data from ESP32 and parse it, then update the textViews on home page
-                    val inputStream: InputStream = socket.inputStream //interface with socket object char stream
+                    val inputStream: InputStream =
+                        socket.inputStream //interface with socket object char stream
                     val outputStream: OutputStream = socket.outputStream
                     val buffer = ByteArray(1024)
                     var bytes: Int
                     while (true) {
                         bytes = inputStream.read(buffer) //return number of available bytes
-                        val rxString = String(buffer, 0, bytes) //convert buffer of bytes to a string
-                        val parts = rxString.split(" ") // split the string into an array of substrings based on the space delimiter
+                        val rxString =
+                            String(buffer, 0, bytes) //convert buffer of bytes to a string
+                        val parts =
+                            rxString.split(" ") // split the string into an array of substrings based on the space delimiter
                         try {
                             chargePercent = parts[0].toFloat() //first part is always charge percent
-                            myTextView.text = String.format("%5.1f %%", chargePercent)
-                        }
-                        catch (e: java.lang.NumberFormatException){
-                            myTextView.text = "-----.-----"
-                        }
-                        try {
-                              powerOutput = parts[1].toFloat() //second part is always power value
-                            runOnUiThread {
-                                textView2.text = String.format("%5.3f W", powerOutput)
+//                            myTextView.text = String.format("%5.1f %%", chargePercent)
+                            // Format chargePercent and update LiveData1 in HomeViewModel
+                            val formattedChargePercent = String.format("%5.1f %%", chargePercent)
+                            mainHandler.post {
+                                homeViewModel.setData1(formattedChargePercent)
                             }
                         }
-                        catch (e: java.lang.NumberFormatException){
-                            runOnUiThread {
+                        catch (e: java.lang.NumberFormatException) {
+                            mainHandler.post {
+                                myTextView.text = "-----.-----"
+                            }
+                        }
+                        try {
+                            powerOutput = parts[1].toFloat() //second part is always power value
+//                          textView2.text = String.format("%5.3f W", powerOutput)
+                            val formattedPowerOutput = String.format("%5.3f W", powerOutput)
+                            mainHandler.post {
+                                homeViewModel.setData2(formattedPowerOutput)
+                            }
+
+                        }
+                        catch (e: java.lang.NumberFormatException) {
+                            mainHandler.post {
                                 textView2.text = "-----.-----"
                             }
                         }
@@ -212,7 +241,8 @@ class MainActivity : AppCompatActivity() {
                         // writing to the ESP32
                         val dataToSend = 5.5f // Float value to send
 //                        val dataToSend = desiredCharge.text.toString().toFloat()
-                        val byteBuffer = ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putFloat(dataToSend)
+                        val byteBuffer = ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN)
+                            .putFloat(dataToSend)
                         val dataBytes = byteBuffer.array()
 
 
@@ -221,8 +251,7 @@ class MainActivity : AppCompatActivity() {
 
 
                     }
-                }
-                catch (e: IOException){
+                } catch (e: IOException) {
                     runOnUiThread {
                         Toast.makeText(
                             this,
@@ -234,6 +263,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+}
 //    fun doPlot() {
 //        val plot = findViewById<XYPlot>(R.id.plotCharge)
 //        val chargedArray = arrayOf<Number>(4.5, 7.5, 9.0, 7.5)
@@ -268,9 +298,9 @@ class MainActivity : AppCompatActivity() {
 ////            }
 ////        }
 //    }
-    fun batteryUpdate(
-        ChargeLevel: Int)
-    {
+//    fun batteryUpdate(
+//        ChargeLevel: Int)
+//    {
 //        val myImageView: ImageView = findViewById(R.id.baseline_battery)
 
 //    if(ChargeLevel = 0){
@@ -279,5 +309,5 @@ class MainActivity : AppCompatActivity() {
 //    else{
 //        battery0.setVisibility(View.GONE);
 //    }
-    }
-}
+//    }
+//}
