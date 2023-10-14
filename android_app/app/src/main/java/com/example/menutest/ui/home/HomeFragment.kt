@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.menutest.databinding.FragmentHomeBinding
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.example.menutest.MainActivity
 import com.example.menutest.R
 
@@ -28,11 +29,12 @@ class HomeFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         val textView1 = root.findViewById<TextView>(R.id.myTextView)
         val textView2 = root.findViewById<TextView>(R.id.textView2)
+        val gifImageView = root.findViewById<ImageView>(R.id.gifwindturbine)
 
         homeViewModel.getData1().observe(viewLifecycleOwner) { newData ->
             // Update the first TextView with live updates
             textView1.text = newData
-            Log.d("HomeFragment", "LiveData1 observer triggered with data: $newData")
+//            Log.d("HomeFragment", "LiveData1 observer triggered with data: $newData")
         }
 
         // Observe the data from the HomeViewModel for LiveData2
@@ -40,6 +42,13 @@ class HomeFragment : Fragment() {
             // Update the second TextView with live updates
             textView2.text = newData
         }
+
+        // Load and animate the GIF using Glide
+        Glide.with(this)
+            .asGif()
+            .load(R.drawable.windturbine) // Replace with your GIF resource
+            .into(gifImageView)
+
         return root
 
     }

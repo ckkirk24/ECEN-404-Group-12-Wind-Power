@@ -13,12 +13,12 @@ class HomeViewModel : ViewModel() {
 
     fun setData1(newData: String) {
         dataLiveData1.value = newData
-        Log.d("HomeViewModel", "setData1 called with value: $newData")
+//        Log.d("HomeViewModel", "setData1 called with value: $newData")
     }
 
     fun setData2(newData: String) {
         dataLiveData2.value = newData
-        Log.d("HomeViewModel", "setData2 called with value: $newData")
+//        Log.d("HomeViewModel", "setData2 called with value: $newData")
     }
 
     fun getData1(): LiveData<String> {

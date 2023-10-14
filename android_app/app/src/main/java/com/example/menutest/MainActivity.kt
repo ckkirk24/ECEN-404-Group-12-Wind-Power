@@ -74,8 +74,8 @@ class MainActivity : AppCompatActivity() {
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
         // Example: Set the data when it changes (you can set it from your data source)
-        homeViewModel.setData1("New data from MainActivity")
-        homeViewModel.setData2("Data for LiveData2 from MainActivity")
+        homeViewModel.setData1("")
+        homeViewModel.setData2("")
 
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
@@ -220,7 +220,8 @@ class MainActivity : AppCompatActivity() {
                         }
                         catch (e: java.lang.NumberFormatException) {
                             mainHandler.post {
-                                myTextView.text = "-----.-----"
+//                                myTextView.text = "-----.-----"
+                                homeViewModel.setData1("-----.-----")
                             }
                         }
                         try {
@@ -234,7 +235,8 @@ class MainActivity : AppCompatActivity() {
                         }
                         catch (e: java.lang.NumberFormatException) {
                             mainHandler.post {
-                                textView2.text = "-----.-----"
+//                                textView2.text = "-----.-----"
+                                homeViewModel.setData2("-----.-----")
                             }
                         }
 
