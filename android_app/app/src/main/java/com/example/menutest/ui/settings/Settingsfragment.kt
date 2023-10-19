@@ -30,7 +30,7 @@ class Settingsfragment : Fragment() {
         //reference edit_text and textview in the settings fragment
         val editText = root.findViewById<EditText>(R.id.edit_text)
         val displayText = root.findViewById<TextView>(R.id.display_text)
-        editText.setText("10.0")
+//        editText.setText("Enter Max Charge Percentage (0-100%): ")
         //confirm user input is valid
         editText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {

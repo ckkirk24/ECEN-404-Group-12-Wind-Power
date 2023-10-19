@@ -11,4 +11,44 @@
     <string name="menu_design">Turbine Orientations</string>
     <string name="menu_histogram">Charge Data</string>
     <string name="menu_settings">Set Max Charge</string>
+
+    <string name="hawt_vawt_comparison">
+    <![CDATA[
+    <b>Comparison between HAWT and VAWT:</b><br><br>
+    <ol>
+        <li><b>HAWT (Horizontal Axis Wind Turbine):</b>
+        <br>
+        - <i>Design:</i> HAWTs have a horizontal axis, similar to a traditional windmill.
+        <br>
+        - <i>Orientation:</i> HAWTs are oriented to face into the wind.
+        <br>
+        - <i>Efficiency:</i> HAWTs are known for their high efficiency and power output.
+        </li><br>
+        <li><b>VAWT (Vertical Axis Wind Turbine):</b>
+        <br>
+        - <i>Design:</i> VAWTs have a vertical axis and often have a unique, egg-beater or helical design.
+        <br>
+        - <i>Orientation:</i> VAWTs can capture wind from any direction without turning.
+        <br>
+        - <i>Efficiency:</i> VAWTs are generally less efficient than HAWTs and are used for smaller-scale applications.
+        </li>
+    </ol>
+    <br>
+
+    <b>Ideal Use Cases:</b><br><br>
+    HAWTs are ideal for large-scale wind farms and commercial electricity generation due to their higher efficiency and power output. They perform well in areas with consistent and strong wind patterns.<br>
+    VAWTs, on the other hand, are suitable for smaller-scale applications and can be used in urban or residential settings where wind patterns may vary. Their ability to capture wind from any direction makes them adaptable in changing conditions.
+
+    <br><br>
+    <b>Why HAWTs are generally more efficient:</b><br><br>
+    HAWTs have a design that allows them to take advantage of higher wind speeds, especially at higher altitudes. Their orientation directly into the wind optimizes energy capture. Additionally, HAWTs are well-suited for larger blades, resulting in higher torque and power generation. These factors contribute to their higher efficiency compared to VAWTs.
+
+    <br><br>
+    Click <a href="https://commons.clarku.edu/cgi/viewcontent.cgi?article=1158&context=idce_masters_papers">here</a> to access the website for more information.
+    ]]>
+</string>
+
+
+
+
 </resources>
