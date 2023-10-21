@@ -3,6 +3,7 @@ package com.example.menutest.ui.gallery
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,6 +55,8 @@ class GalleryFragment : Fragment() {
         // Set the TextView to interpret HTML
         comparisonTextView.text = Html.fromHtml(comparisonText, Html.FROM_HTML_MODE_LEGACY)
 
+        // Make the link clickable
+        comparisonTextView.movementMethod = LinkMovementMethod.getInstance()
 
         return root
     }
