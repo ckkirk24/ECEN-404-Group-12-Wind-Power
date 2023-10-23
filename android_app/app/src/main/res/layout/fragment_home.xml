@@ -51,10 +51,11 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.828"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
-        app:layout_constraintVertical_bias="0.933" />
+        app:layout_constraintVertical_bias="0.915" />
 
     <ImageView
         android:id="@+id/battery_2_bar"
@@ -64,10 +65,11 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.828"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
-        app:layout_constraintVertical_bias="0.933" />
+        app:layout_constraintVertical_bias="0.915" />
 
     <ImageView
         android:id="@+id/battery_3_bar"
@@ -77,10 +79,11 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.828"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
-        app:layout_constraintVertical_bias="0.933" />
+        app:layout_constraintVertical_bias="0.915" />
 
     <ImageView
         android:id="@+id/battery_4_bar"
@@ -90,10 +93,11 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.828"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
-        app:layout_constraintVertical_bias="0.933" />
+        app:layout_constraintVertical_bias="0.915" />
 
     <ImageView
         android:id="@+id/battery_5_bar"
@@ -103,10 +107,11 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.828"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
-        app:layout_constraintVertical_bias="0.933" />
+        app:layout_constraintVertical_bias="0.915" />
 
     <ImageView
         android:id="@+id/battery_6_bar"
@@ -116,10 +121,11 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.828"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
-        app:layout_constraintVertical_bias="0.933" />
+        app:layout_constraintVertical_bias="0.915" />
 
 <!--    <ImageView-->
 <!--        android:id="@+id/battery_charging_full"-->
@@ -142,10 +148,11 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.828"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
-        app:layout_constraintVertical_bias="0.933" />
+        app:layout_constraintVertical_bias="0.915" />
 
 
 
