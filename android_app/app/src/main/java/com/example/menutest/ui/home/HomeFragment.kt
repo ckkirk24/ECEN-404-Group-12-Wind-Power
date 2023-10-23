@@ -18,7 +18,14 @@ class HomeFragment : Fragment() {
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var textView1: TextView
     private lateinit var textView2: TextView
-
+    private lateinit var emptyBattery: ImageView
+    private lateinit var battery1Bar: ImageView
+    private lateinit var battery2Bar: ImageView
+    private lateinit var battery3Bar: ImageView
+    private lateinit var battery4Bar: ImageView
+    private lateinit var battery5Bar: ImageView
+    private lateinit var battery6Bar: ImageView
+    private lateinit var batteryFull: ImageView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,11 +37,25 @@ class HomeFragment : Fragment() {
         val textView1 = root.findViewById<TextView>(R.id.myTextView)
         val textView2 = root.findViewById<TextView>(R.id.textView2)
         val gifImageView = root.findViewById<ImageView>(R.id.gifwindturbine)
+        val gifImageView2 = root.findViewById<ImageView>(R.id.gifhairdrier)
+
+        emptyBattery = root.findViewById<ImageView>(R.id.empty_battery)
+        battery1Bar = root.findViewById<ImageView>(R.id.battery_1_bar)
+        battery2Bar = root.findViewById<ImageView>(R.id.battery_2_bar)
+        battery3Bar = root.findViewById<ImageView>(R.id.battery_3_bar)
+        battery4Bar = root.findViewById<ImageView>(R.id.battery_4_bar)
+        battery5Bar = root.findViewById<ImageView>(R.id.battery_5_bar)
+        battery6Bar = root.findViewById<ImageView>(R.id.battery_6_bar)
+        batteryFull = root.findViewById<ImageView>(R.id.battery_full)
+
+//        emptyBattery.visibility = View.VISIBLE
+
 
         homeViewModel.getData1().observe(viewLifecycleOwner) { newData ->
             // Update the first TextView with live updates
             textView1.text = newData
-//            Log.d("HomeFragment", "LiveData1 observer triggered with data: $newData")
+            updateBatteryImageVisibility(newData)
+
         }
 
         // Observe the data from the HomeViewModel for LiveData2
@@ -49,76 +70,124 @@ class HomeFragment : Fragment() {
             .load(R.drawable.windturbine) // Replace with your GIF resource
             .into(gifImageView)
 
+        Glide.with(this)
+            .asGif()
+            .load(R.drawable.hairdryer) // Replace with your GIF resource
+            .into(gifImageView2)
+
         return root
 
     }
+    private fun updateBatteryImageVisibility(text: String) {
+        // Parse the text as a Float
+        val cleanedText = text.replace("%", "").trim()
 
-//    override fun onResume() {
-//        super.onResume()
-//        Log.d("HomeFragment", "onResume called")
-//        // Observe the data from the HomeViewModel for LiveData1
-//    }
+
+        val value = cleanedText.toFloatOrNull()
+//        Log.d("HomeFragment", "Received text: $value") // Log the cleaned text
+        // Check the value and set visibility accordingly
+        if (value != null) {
+//        Log.d("HomeFragment", "Value: $value") // Log the value
+
+            if (value in 0.0..5.0) {
+                emptyBattery.visibility = View.VISIBLE
+                battery1Bar.visibility = View.GONE
+                battery2Bar.visibility = View.GONE
+                battery3Bar.visibility = View.GONE
+                battery4Bar.visibility = View.GONE
+                battery5Bar.visibility = View.GONE
+                battery6Bar.visibility = View.GONE
+                batteryFull.visibility = View.GONE
+            } else if (value > 5.0 && value <= 16.0) {
+                emptyBattery.visibility = View.GONE
+                battery1Bar.visibility = View.VISIBLE
+                battery2Bar.visibility = View.GONE
+                battery3Bar.visibility = View.GONE
+                battery4Bar.visibility = View.GONE
+                battery5Bar.visibility = View.GONE
+                battery6Bar.visibility = View.GONE
+                batteryFull.visibility = View.GONE
+            } else if (value > 16.0 && value <= 32.0) {
+                emptyBattery.visibility = View.GONE
+                battery1Bar.visibility = View.GONE
+                battery2Bar.visibility = View.VISIBLE
+                battery3Bar.visibility = View.GONE
+                battery4Bar.visibility = View.GONE
+                battery5Bar.visibility = View.GONE
+                battery6Bar.visibility = View.GONE
+                batteryFull.visibility = View.GONE
+            } else if (value > 32.0 && value <= 48.0) {
+                emptyBattery.visibility = View.GONE
+                battery1Bar.visibility = View.GONE
+                battery2Bar.visibility = View.GONE
+                battery3Bar.visibility = View.VISIBLE
+                battery4Bar.visibility = View.GONE
+                battery5Bar.visibility = View.GONE
+                battery6Bar.visibility = View.GONE
+                batteryFull.visibility = View.GONE
+            } else if (value > 48.0 && value <= 64.0) {
+                emptyBattery.visibility = View.GONE
+                battery1Bar.visibility = View.GONE
+                battery2Bar.visibility = View.GONE
+                battery3Bar.visibility = View.GONE
+                battery4Bar.visibility = View.VISIBLE
+                battery5Bar.visibility = View.GONE
+                battery6Bar.visibility = View.GONE
+                batteryFull.visibility = View.GONE
+            } else if (value > 64.0 && value <= 80.0) {
+                emptyBattery.visibility = View.GONE
+                battery1Bar.visibility = View.GONE
+                battery2Bar.visibility = View.GONE
+                battery3Bar.visibility = View.GONE
+                battery4Bar.visibility = View.GONE
+                battery5Bar.visibility = View.VISIBLE
+                battery6Bar.visibility = View.GONE
+                batteryFull.visibility = View.GONE
+            } else if (value > 80.0 && value <= 95.0) {
+                emptyBattery.visibility = View.GONE
+                battery1Bar.visibility = View.GONE
+                battery2Bar.visibility = View.GONE
+                battery3Bar.visibility = View.GONE
+                battery4Bar.visibility = View.GONE
+                battery5Bar.visibility = View.GONE
+                battery6Bar.visibility = View.VISIBLE
+                batteryFull.visibility = View.GONE
+            } else if (value > 95.0 && value <= 100.0) {
+                emptyBattery.visibility = View.GONE
+                battery1Bar.visibility = View.GONE
+                battery2Bar.visibility = View.GONE
+                battery3Bar.visibility = View.GONE
+                battery4Bar.visibility = View.GONE
+                battery5Bar.visibility = View.GONE
+                battery6Bar.visibility = View.GONE
+                batteryFull.visibility = View.VISIBLE
+            } else {
+                // Handle the case where value is out of the specified ranges
+                // For example, you can hide the ImageView in this case
+                emptyBattery.visibility = View.GONE
+                battery1Bar.visibility = View.GONE
+                battery2Bar.visibility = View.GONE
+                battery3Bar.visibility = View.GONE
+                battery4Bar.visibility = View.GONE
+                battery5Bar.visibility = View.GONE
+                battery6Bar.visibility = View.GONE
+                batteryFull.visibility = View.GONE
+            }
+    } else {
+        Log.d("HomeFragment", "Invalid value: $cleanedText") // Log that the value is invalid
+        // Handle the case where value is not a valid float
+        // For example, you can hide the ImageView in this case
+            emptyBattery.visibility = View.GONE
+            battery1Bar.visibility = View.GONE
+            battery2Bar.visibility = View.GONE
+            battery3Bar.visibility = View.GONE
+            battery4Bar.visibility = View.GONE
+            battery5Bar.visibility = View.GONE
+            battery6Bar.visibility = View.GONE
+            batteryFull.visibility = View.GONE
+    }
+    }
 }
 
-//    private var _binding: FragmentHomeBinding? = null
-////    private var ChargeLevel = 0
-//    // This property is only valid between onCreateView and
-//    // onDestroyView.
-//    private val binding get() = _binding!!
-//
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View {
-//        val mainActivity = activity as MainActivity
-//
-//        val chargePercent = mainActivity.chargePercent
-//        val powerOutput = mainActivity.powerOutput
-//
-//        val homeViewModel =
-//            ViewModelProvider(this).get(HomeViewModel::class.java)
-//
-//        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-//        val root: View = binding.root
-//        binding.myTextView.text = String.format("%5.1f %%", chargePercent)
-//        binding.textView2.text = String.format("%5.3f W", powerOutput)
-//        val thread2 = Thread(Runnable{
-//            activity?.runOnUiThread {
-//                // Update UI components here
-//                updateData()
-//            }
-//        })
-//        thread2.start()
-//        return root
-//    }
-//    // empty battery display
-//    private fun updateData() {
-//        val mainActivity = activity as MainActivity
-////        super.onResume()
-////        while (true) {
-//            val chargePercent = mainActivity.chargePercent
-//            val powerOutput = mainActivity.powerOutput
-////            activity?.runOnUiThread  {
-//                binding.myTextView.text = String.format("%5.1f %%", chargePercent)
-//                binding.textView2.text = String.format("%5.3f W", powerOutput)
-////            }
-////        }
-//    }
-//    fun batteryUpdate(
-//         ChargeLevel: Int)
-//    {
-//        val myImageView: ImageView = findViewById(R.id.baseline_battery)
 
-//    if(ChargeLevel = 0){
-//        battery0.setVisibility(View.VISIBLE);
-//    }
-//    else{
-//        battery0.setVisibility(View.GONE);
-//    }
-//    }
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-//        _binding = null
-//    }
-//}
+
