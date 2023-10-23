@@ -13,6 +13,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.Menu
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -35,6 +36,8 @@ import com.androidplot.xy.XYPlot
 import com.androidplot.xy.XYSeries
 import com.example.menutest.databinding.ActivityMainBinding
 import com.example.menutest.ui.home.HomeViewModel
+import com.example.menutest.ui.settings.SettingsViewModel
+import com.example.menutest.ui.settings.Settingsfragment
 import com.google.android.material.navigation.NavigationView
 import java.io.IOException
 import java.io.InputStream
@@ -60,6 +63,7 @@ class MainActivity : AppCompatActivity() {
     var powerOutput: Float = 0.0F
     private lateinit var homeViewModel: HomeViewModel
     private val mainHandler = Handler(Looper.getMainLooper())
+    private lateinit var settingsViewModel: SettingsViewModel
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +71,8 @@ class MainActivity : AppCompatActivity() {
         PixelUtils.init(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
@@ -76,6 +82,9 @@ class MainActivity : AppCompatActivity() {
         // Example: Set the data when it changes (you can set it from your data source)
         homeViewModel.setData1("")
         homeViewModel.setData2("")
+
+        // View model for settings fragment
+        settingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
 
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
@@ -90,11 +99,22 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+
+
         //BT Setup running as background thread
         val thread = Thread(Runnable {
             BTsetup()
         })
         thread.start()
+
+//        // if the initial background thread connection fails check the button on the settings page
+//        val connectButton = findViewById<Button>(R.id.connectButton)
+//        connectButton.setOnClickListener {
+//            // Call the BTsetup function to initiate the connection
+//            BTsetup()
+//        }
+
 //        val thread2 = Thread(Runnable {
 //           doPlot()
 //        })
@@ -122,18 +142,6 @@ class MainActivity : AppCompatActivity() {
         val myTextView = findViewById<TextView>(R.id.myTextView)
         val textView2 = findViewById<TextView>(R.id.textView2)
 
-        val fragmentManager = supportFragmentManager
-        val fragment = fragmentManager.findFragmentById(R.id.nav_settings)
-        // Step 4: Access the EditText within the fragment
-        val editTextInFragment = fragment?.view?.findViewById<EditText>(R.id.edit_text)
-
-        // Step 5: Get the text from the EditText
-        val textFromEditText = editTextInFragment?.text.toString()
-
-//        val desiredCharge = findViewById<EditText>(R.id.edit_text)
-        Log.d("SETTINGS", "Text from EditText: $textFromEditText")
-//        val myVariableText = "Hello, world!"
-//        myTextView.text = myVariableText
         //get the BT adapter from Android API
         val bluetoothManager: BluetoothManager = getSystemService(BluetoothManager::class.java)
         val bluetoothAdapter: BluetoothAdapter? = bluetoothManager.getAdapter()
@@ -189,77 +197,85 @@ class MainActivity : AppCompatActivity() {
                 }
 //                myTextView.text = "Battery Charge Level: "
 //                myTextView.text = "chosen: " + deviceName +"\n others:\n" + myDeviceNames
-                try {
-                    //get ESP32 device and create socket and connect to it
-                    val device: BluetoothDevice =
-                        bluetoothAdapter.getRemoteDevice(deviceHardwareAddress)
-                    //create socket using common serial port UUID
-                    val socket =
-                        device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"))
-                    socket.connect()
-                    //get BT serial data from ESP32 and parse it, then update the textViews on home page
-                    val inputStream: InputStream =
-                        socket.inputStream //interface with socket object char stream
-                    val outputStream: OutputStream = socket.outputStream
-                    val buffer = ByteArray(1024)
-                    var bytes: Int
-                    while (true) {
-                        bytes = inputStream.read(buffer) //return number of available bytes
-                        val rxString =
-                            String(buffer, 0, bytes) //convert buffer of bytes to a string
-                        val parts =
-                            rxString.split(" ") // split the string into an array of substrings based on the space delimiter
-                        try {
-                            chargePercent = parts[0].toFloat() //first part is always charge percent
+                while (true) {
+                    try {
+                        //get ESP32 device and create socket and connect to it
+                        val device: BluetoothDevice =
+                            bluetoothAdapter.getRemoteDevice(deviceHardwareAddress)
+                        //create socket using common serial port UUID
+                        val socket =
+                            device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"))
+                        socket.connect()
+                        //get BT serial data from ESP32 and parse it, then update the textViews on home page
+                        val inputStream: InputStream =
+                            socket.inputStream //interface with socket object char stream
+                        val outputStream: OutputStream = socket.outputStream
+                        val buffer = ByteArray(1024)
+                        var bytes: Int
+                        while (true) {
+                            bytes = inputStream.read(buffer) //return number of available bytes
+                            val rxString =
+                                String(buffer, 0, bytes) //convert buffer of bytes to a string
+                            val parts =
+                                rxString.split(" ") // split the string into an array of substrings based on the space delimiter
+                            try {
+                                chargePercent =
+                                    parts[0].toFloat() //first part is always charge percent
 //                            myTextView.text = String.format("%5.1f %%", chargePercent)
-                            // Format chargePercent and update LiveData1 in HomeViewModel
-                            val formattedChargePercent = String.format("%5.1f %%", chargePercent)
-                            mainHandler.post {
-                                homeViewModel.setData1(formattedChargePercent)
-                            }
-                        }
-                        catch (e: java.lang.NumberFormatException) {
-                            mainHandler.post {
+                                // Format chargePercent and update LiveData1 in HomeViewModel
+                                val formattedChargePercent =
+                                    String.format("%5.1f %%", chargePercent)
+                                mainHandler.post {
+                                    homeViewModel.setData1(formattedChargePercent)
+                                }
+                            } catch (e: java.lang.NumberFormatException) {
+                                mainHandler.post {
 //                                myTextView.text = "-----.-----"
-                                homeViewModel.setData1("-----.-----")
+                                    homeViewModel.setData1("-----.-----")
+                                }
                             }
-                        }
-                        try {
-                            powerOutput = parts[1].toFloat() //second part is always power value
+                            try {
+                                powerOutput = parts[1].toFloat() //second part is always power value
 //                          textView2.text = String.format("%5.3f W", powerOutput)
-                            val formattedPowerOutput = String.format("%5.3f W", powerOutput)
-                            mainHandler.post {
-                                homeViewModel.setData2(formattedPowerOutput)
-                            }
+                                val formattedPowerOutput = String.format("%5.3f W", powerOutput)
+                                mainHandler.post {
+                                    homeViewModel.setData2(formattedPowerOutput)
+                                }
 
-                        }
-                        catch (e: java.lang.NumberFormatException) {
-                            mainHandler.post {
+                            } catch (e: java.lang.NumberFormatException) {
+                                mainHandler.post {
 //                                textView2.text = "-----.-----"
-                                homeViewModel.setData2("-----.-----")
+                                    homeViewModel.setData2("-----.-----")
+                                }
+                            }
+
+//                             writing to the ESP32
+//                            val dataToSend = 5.5f // Float value to send
+                            val dataToSend = settingsViewModel.desiredChargeLevel.value
+                            Log.d("BTsetup", "desiredChargeLevel in BTsetup: $dataToSend")
+
+//                            Log.d("SETTINGS", "Text from EditText: $textFromEditText")
+                            val byteBuffer = dataToSend?.let {
+                                ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN)
+                                    .putFloat(it)
+                            }
+                            val dataBytes = byteBuffer?.array()
+
+                            if (dataBytes != null) {
+                                outputStream.write(dataBytes)
+                            } else {
+//                                Log.e("BTSetup", "dataBytes is null or empty")
                             }
                         }
+                    } catch (e: IOException) {
+                        runOnUiThread {
+                            Toast.makeText(
+                                this,
+                                "Failed to establish Bluetooth connection",
+                                Toast.LENGTH_SHORT
+                            ).show()
 
-                        // writing to the ESP32
-                        val dataToSend = 5.5f // Float value to send
-//                        val dataToSend = desiredCharge.text.toString().toFloat()
-                        val byteBuffer = ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN)
-                            .putFloat(dataToSend)
-                        val dataBytes = byteBuffer.array()
-
-
-
-                        outputStream.write(dataBytes) // Send data to ESP32 over Bluetooth
-
-
-                    }
-                } catch (e: IOException) {
-                    runOnUiThread {
-                        Toast.makeText(
-                            this,
-                            "Failed to establish Bluetooth connection",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        }
                     }
                 }
             }
