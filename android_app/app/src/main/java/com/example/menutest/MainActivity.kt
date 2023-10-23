@@ -252,7 +252,7 @@ class MainActivity : AppCompatActivity() {
 //                             writing to the ESP32
 //                            val dataToSend = 5.5f // Float value to send
                             val dataToSend = settingsViewModel.desiredChargeLevel.value
-                            Log.d("BTsetup", "desiredChargeLevel in BTsetup: $dataToSend")
+//                            Log.d("BTsetup", "desiredChargeLevel in BTsetup: $dataToSend")
 
 //                            Log.d("SETTINGS", "Text from EditText: $textFromEditText")
                             val byteBuffer = dataToSend?.let {

@@ -49,7 +49,7 @@ class Settingsfragment : Fragment() {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 //take user input text and convert to float or null
                 val desiredChargeLevel = editText.text.toString().toFloatOrNull()
-                if (desiredChargeLevel != null) {
+                if (desiredChargeLevel != null && desiredChargeLevel <= 100 ) {
                     settingsViewModel.setDesiredChargeLevel(desiredChargeLevel)
                 }
                 //condition for valid user input
