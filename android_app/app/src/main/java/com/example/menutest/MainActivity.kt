@@ -197,7 +197,9 @@ class MainActivity : AppCompatActivity() {
                 }
 //                myTextView.text = "Battery Charge Level: "
 //                myTextView.text = "chosen: " + deviceName +"\n others:\n" + myDeviceNames
+                var isToastShown = false
                 while (true) {
+
                     try {
                         //get ESP32 device and create socket and connect to it
                         val device: BluetoothDevice =
@@ -268,6 +270,7 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                     } catch (e: IOException) {
+                        if (!isToastShown) {
                         runOnUiThread {
                             Toast.makeText(
                                 this,
@@ -275,6 +278,8 @@ class MainActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             ).show()
 
+                        }
+                            isToastShown = true
                         }
                     }
                 }

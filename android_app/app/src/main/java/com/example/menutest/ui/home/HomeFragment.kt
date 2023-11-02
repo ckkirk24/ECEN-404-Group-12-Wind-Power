@@ -177,7 +177,7 @@ class HomeFragment : Fragment() {
         Log.d("HomeFragment", "Invalid value: $cleanedText") // Log that the value is invalid
         // Handle the case where value is not a valid float
         // For example, you can hide the ImageView in this case
-            emptyBattery.visibility = View.GONE
+            emptyBattery.visibility = View.VISIBLE
             battery1Bar.visibility = View.GONE
             battery2Bar.visibility = View.GONE
             battery3Bar.visibility = View.GONE
