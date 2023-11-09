@@ -2,6 +2,7 @@ package com.example.menutest.ui.slideshow
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,11 +24,14 @@ class SlideshowFragment : Fragment() {
     private var _binding: FragmentSlideshowBinding? = null
     private val binding get() = _binding!!
     private var callcount = 0
+    private lateinit var homeViewModel: HomeViewModel
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        // using homeviewmodel to get the live data (battery charge level)
+        homeViewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
 
         val slideshowViewModel =
             ViewModelProvider(this).get(SlideshowViewModel::class.java)
@@ -35,7 +39,23 @@ class SlideshowFragment : Fragment() {
 //        val root = inflater.inflate(R.layout.fragment_slideshow, container, false)
         _binding = FragmentSlideshowBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+//        //get the real time battery charge level and initiate replot
+//        homeViewModel.getData1().observe(viewLifecycleOwner) { newData ->
+//
+//            Log.d("SlideshowFragment", "New battery charge level: $newData")
+//
+//        }
+        //get the real time battery charge level and initiate replot
+        homeViewModel.getData1().observeForever { newData ->
+
+            Log.d("SlideshowFragment", "New battery charge level: $newData")
+
+        }
+
         doPlot()
+
+
         return root
 
 
