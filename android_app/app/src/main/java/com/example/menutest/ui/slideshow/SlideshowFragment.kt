@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.ToggleButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.androidplot.xy.*
@@ -165,7 +166,7 @@ class SlideshowFragment : Fragment() {
     private var timeCounter = 0
     private val timeArray: MutableList<Number> = mutableListOf()
     private val chargedArray: MutableList<Number> = mutableListOf()
-
+    private var isPlotEnabled = false // Flag to track the plot state
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -176,15 +177,21 @@ class SlideshowFragment : Fragment() {
         _binding = FragmentSlideshowBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        homeViewModel.getData1().observe(viewLifecycleOwner) { newData ->
+        val toggleButton = root.findViewById<ToggleButton>(R.id.togglePlotButton)
+        toggleButton.setOnCheckedChangeListener { _, isChecked ->
+            isPlotEnabled = isChecked
+        }
+
+        homeViewModel.getData1().observeForever { newData ->
             timeCounter++
             val cleanedText = newData.replace("%", "").trim()
             val chargeLevel = cleanedText.toFloatOrNull() ?: 0.0f
 
             timeArray.add(timeCounter)
             chargedArray.add(chargeLevel)
-
-            doPlot(timeArray.toTypedArray(), chargedArray.toTypedArray())
+            if (isPlotEnabled) {
+                doPlot(timeArray.toTypedArray(), chargedArray.toTypedArray())
+            }
         }
 
         return root
@@ -202,14 +209,16 @@ class SlideshowFragment : Fragment() {
         val chargedFormat = LineAndPointFormatter(Color.RED, Color.GREEN, null, null)
         plot.clear()
         plot.addSeries(chargedSeries, chargedFormat)
+        PanZoom.attach(plot) //add zooming and panning capabilities
         plot.setRangeBoundaries(0, 100, BoundaryMode.FIXED)
+        plot.setDomainBoundaries(0,24,BoundaryMode.AUTO)
         plot.redraw()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+//    override fun onDestroyView() {
+//        super.onDestroyView()
+//        _binding = null
+//    }
 }
 
 

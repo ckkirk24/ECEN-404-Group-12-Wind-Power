@@ -1,44 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#333333"
     tools:context=".ui.slideshow.SlideshowFragment">
-
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        android:text="Data Fragment"-->
-<!--        android:layout_height="wrap_content" />-->
 
     <com.androidplot.xy.XYPlot
         android:id="@+id/plotCharge"
         style="@style/APDefacto.Light"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:domainTitle="Time (hours)"
         app:rangeTitle="Charge (%)"
         app:title="Charge (%) vs Time (Seconds)"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/togglePlotButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
+    <ToggleButton
+        android:id="@+id/togglePlotButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:checked="false"
+        android:textOff="Plot Off"
+        android:textOn="Plot On"
+        app:layout_constraintTop_toBottomOf="@id/plotCharge"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.787"
-        android:id="@+id/textTest"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="16dp" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--    xmlns:tools="http://schemas.android.com/tools"-->
+
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent"-->
+    <!--    tools:context=".ui.slideshow.SlideshowFragment">-->
+
+    <!--&lt;!&ndash;    <TextView&ndash;&gt;-->
+    <!--&lt;!&ndash;        android:layout_width="wrap_content"&ndash;&gt;-->
+    <!--&lt;!&ndash;        app:layout_constraintStart_toStartOf="parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;        app:layout_constraintEnd_toEndOf="parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;        app:layout_constraintTop_toTopOf="parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;        app:layout_constraintBottom_toBottomOf="parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;        android:text="Data Fragment"&ndash;&gt;-->
+    <!--&lt;!&ndash;        android:layout_height="wrap_content" />&ndash;&gt;-->
+
+    <!--    <com.androidplot.xy.XYPlot-->
+    <!--        android:id="@+id/plotCharge"-->
+    <!--        style="@style/APDefacto.Light"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        app:domainTitle="Time (hours)"-->
+    <!--        app:rangeTitle="Charge (%)"-->
+    <!--        app:title="Charge (%) vs Time (Seconds)"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--    <ToggleButton-->
+    <!--        android:id="@+id/togglePlotButton"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:checked="false"-->
+    <!--        android:textOff="Plot Off"-->
+    <!--        android:textOn="Plot On"-->
+    <!--        tools:layout_editor_absoluteX="161dp"-->
+    <!--        tools:layout_editor_absoluteY="642dp" />-->
+
+    <!--    <TextView-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:layout_constraintVertical_bias="0.787"-->
+    <!--        android:id="@+id/textTest"/>-->
+
+
+    <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
