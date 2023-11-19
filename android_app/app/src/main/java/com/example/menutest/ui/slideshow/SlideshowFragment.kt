@@ -162,6 +162,7 @@ class SlideshowFragment : Fragment() {
     private var _binding: FragmentSlideshowBinding? = null
     private val binding get() = _binding!!
 
+//    private var lastCounterValue: Int = 0
     private lateinit var homeViewModel: HomeViewModel
     private var timeCounter = 0
     private val timeArray: MutableList<Number> = mutableListOf()
@@ -178,28 +179,37 @@ class SlideshowFragment : Fragment() {
         val root: View = binding.root
 
         val toggleButton = root.findViewById<ToggleButton>(R.id.togglePlotButton)
+        //button off by default
+        toggleButton.isChecked = false
         toggleButton.setOnCheckedChangeListener { _, isChecked ->
             isPlotEnabled = isChecked
+//            if (isChecked) {
+//                timeCounter = lastCounterValue // Resume where it left off
+//            } else {
+//                lastCounterValue = timeCounter // Save the last value
+//            }
         }
 
         homeViewModel.getData1().observeForever { newData ->
-            timeCounter++
-            val cleanedText = newData.replace("%", "").trim()
-            val chargeLevel = cleanedText.toFloatOrNull() ?: 0.0f
+//            if (isPlotEnabled) {
+                timeCounter++
+                val cleanedText = newData.replace("%", "").trim()
+                val chargeLevel = cleanedText.toFloatOrNull() ?: 0.0f
 
-            timeArray.add(timeCounter)
-            chargedArray.add(chargeLevel)
-            if (isPlotEnabled) {
-                doPlot(timeArray.toTypedArray(), chargedArray.toTypedArray())
-            }
+                timeArray.add(timeCounter)
+                chargedArray.add(chargeLevel)
+                if(isPlotEnabled) {
+                    doPlot(timeArray.toTypedArray(), chargedArray.toTypedArray())
+                }
+//            }
         }
 
         return root
     }
 
     private fun doPlot(timeArray: Array<Number>, chargedArray: Array<Number>) {
-        val plot = binding.plotCharge
-
+//        val plot = binding.plotCharge
+        val plot = binding?.plotCharge ?: return // Handle null binding
         val chargedSeries: XYSeries = SimpleXYSeries(
             timeArray.asList(),
             chargedArray.asList(),
@@ -215,9 +225,52 @@ class SlideshowFragment : Fragment() {
         plot.redraw()
     }
 
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-//        _binding = null
+    override fun onDestroyView() {
+        // Access the toggle button and set it to be off
+        val root: View = binding.root
+        val toggleButton = root.findViewById<ToggleButton>(R.id.togglePlotButton)
+        toggleButton.isChecked = false
+
+        super.onDestroyView()
+        _binding = null
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val root: View = binding.root
+        val toggleButton = root.findViewById<ToggleButton>(R.id.togglePlotButton)
+        toggleButton.isChecked = false
+    }
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        super.onSaveInstanceState(outState)
+//        outState.putIntegerArrayList("TIME_ARRAY", ArrayList(timeArray.map { it.toInt() }))
+//        outState.putFloatArray("CHARGED_ARRAY", chargedArray.map { it.toFloat() }.toFloatArray())
+//    }
+//
+//    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+//        super.onViewStateRestored(savedInstanceState)
+//        if (savedInstanceState != null) {
+//            savedInstanceState.getIntegerArrayList("TIME_ARRAY")?.let { list ->
+//                timeArray.clear()
+//                timeArray.addAll(list.map { it })
+//            }
+//
+//            savedInstanceState.getFloatArray("CHARGED_ARRAY")?.let { array ->
+//                if (chargedArray.size == timeArray.size) {
+//                    for (i in chargedArray.indices) {
+//                        chargedArray[i] = array[i]
+//                    }
+//                } else {
+//                    chargedArray.clear()
+//                    chargedArray.addAll(array.map { it })
+//                }
+//            }
+//
+//            if (isPlotEnabled) {
+//                doPlot(timeArray.toTypedArray(), chargedArray.toTypedArray())
+//            }
+//        }
 //    }
 }
 

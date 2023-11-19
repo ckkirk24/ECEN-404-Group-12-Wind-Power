@@ -53,6 +53,8 @@ class HomeFragment : Fragment() {
 
         homeViewModel.getData1().observe(viewLifecycleOwner) { newData ->
             // Update the first TextView with live updates
+//            Log.d("NewData", "Value: $newData")
+
             textView1.text = newData
             updateBatteryImageVisibility(newData)
 
