@@ -190,7 +190,7 @@ class MainActivity : AppCompatActivity() {
                 pairedDevices?.forEach { device ->
 //                    myDeviceNames += device.name + "\n"
                     //find ESP32 device
-                    if (device.name == "ESP32-BT-Slave") {
+                    if (device.name == "WindPowerDevice") {
                         deviceName = device.name
                         deviceHardwareAddress = device.address // MAC address
                     }

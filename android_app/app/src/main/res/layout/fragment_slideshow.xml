@@ -13,7 +13,7 @@
         style="@style/APDefacto.Light"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:domainTitle="Time (hours)"
+        app:domainTitle="Time (Seconds)"
         app:rangeTitle="Charge (%)"
         app:title="Charge (%) vs Time (Seconds)"
         app:layout_constraintTop_toTopOf="parent"

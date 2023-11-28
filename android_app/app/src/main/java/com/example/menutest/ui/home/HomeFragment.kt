@@ -173,7 +173,7 @@ class HomeFragment : Fragment() {
                 battery4Bar.visibility = View.GONE
                 battery5Bar.visibility = View.GONE
                 battery6Bar.visibility = View.GONE
-                batteryFull.visibility = View.GONE
+                batteryFull.visibility = View.VISIBLE
             }
     } else {
         Log.d("HomeFragment", "Invalid value: $cleanedText") // Log that the value is invalid
