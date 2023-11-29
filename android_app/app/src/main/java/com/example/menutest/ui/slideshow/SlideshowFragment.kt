@@ -192,15 +192,22 @@ class SlideshowFragment : Fragment() {
 
         homeViewModel.getData1().observeForever { newData ->
 //            if (isPlotEnabled) {
-                timeCounter++
+//                timeCounter++
+
+
+            //increment timeCounter by 3 because newData is observed by the MCU every 3 seconds
+            //this 3 second delay comes from adding up delays in the firmware and BT transmission
+//                timeCounter += 3
                 val cleanedText = newData.replace("%", "").trim()
                 val chargeLevel = cleanedText.toFloatOrNull() ?: 0.0f
 
                 timeArray.add(timeCounter)
                 chargedArray.add(chargeLevel)
+
                 if(isPlotEnabled) {
                     doPlot(timeArray.toTypedArray(), chargedArray.toTypedArray())
                 }
+            timeCounter += 3
 //            }
         }
 
@@ -230,6 +237,8 @@ class SlideshowFragment : Fragment() {
         val root: View = binding.root
         val toggleButton = root.findViewById<ToggleButton>(R.id.togglePlotButton)
         toggleButton.isChecked = false
+        //reset time value
+        timeCounter = 0
 
         super.onDestroyView()
         _binding = null
